@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oracle GoldenGate 23ai - Interactive Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --brand-yellow: #F1B13F;
+            --slate-100: #697778;
+            --page-bg: #F5F3F0;
+            --white: #FFFFFF;
+            --text-primary: #161513;
+            --text-secondary: #6B6966;
+            --border-color: #D3D3D1;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(0, 0, 0, 0.12);
+            --focus-color: #C74634;
+            --button-hover: #B13426;
+            --code-bg: #1E1E1E;
+            --success: #4CAF50;
+            --info: #2196F3;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--page-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        h1 { font-size: 2.5rem; font-weight: 300; color: var(--text-primary); }
+        h2 { font-size: 2rem; font-weight: 300; color: var(--text-primary); }
+        h3 { font-size: 1.5rem; font-weight: 400; color: var(--text-primary); }
+        h4 { font-size: 1.25rem; font-weight: 500; color: var(--text-primary); }
+        p { color: var(--text-secondary); margin-bottom: 1rem; }
+        small { font-size: 0.875rem; }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            height: 56px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { display: flex; align-items: center; }
+        .logo-svg { width: 80px; height: 32px; display: flex; align-items: center; justify-content: center; }
+        .logo h1 { font-size: 1.25rem; font-weight: 400; color: var(--text-primary); }
+
+        /* Progress */
+        .progress-container { background: var(--white); padding: 24px; border-bottom: 1px solid var(--border-color); }
+        .progress-steps { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; gap: 24px; }
+        .step { text-align: center; cursor: pointer; transition: .2s; }
+        .step-circle {
+            width: 32px; height: 32px; background: var(--white); border: 2px solid var(--text-secondary);
+            border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 500; font-size: .875rem; transition: .2s; margin-bottom: 8px;
+        }
+        .step.active .step-circle, .step.completed .step-circle {
+            background: var(--brand-yellow); color: var(--text-primary); border-color: var(--brand-yellow);
+        }
+        .step-title { font-size: .875rem; color: var(--text-secondary); font-weight: 400; }
+        .step.active .step-title { color: var(--text-primary); font-weight: 500; }
+
+        /* Main */
+        .main-content { flex: 1; padding: 32px 24px; max-width: 1200px; width: 100%; margin: 0 auto; }
+        .demo-section { background: var(--white); border-radius: 8px; border: 1px solid var(--border-color); padding: 24px; box-shadow: 0 2px 4px var(--shadow-light); display: none; }
+        .demo-section.active { display: block; }
+        .section-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color); }
+        .section-header h2 { margin-bottom: 8px; }
+        .section-header p { margin: 0; }
+
+        .card { background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; padding: 24px; box-shadow: 0 2px 4px var(--shadow-light); transition: .2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px var(--shadow-hover); }
+        .grid { display: grid; gap: 24px; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+
+        .icon { width: 24px; height: 24px; display: inline-block; vertical-align: middle; fill: currentColor; }
+        .icon-large { width: 48px; height: 48px; }
+
+        .btn {
+            padding: 12px 24px; background: var(--slate-100); color: var(--white); border: none; border-radius: 4px;
+            font-size: 1rem; font-weight: 500; cursor: pointer; transition: background .2s; min-height: 44px;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn:hover { background: #5a6869; }
+        .btn:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 2px; }
+        .btn-primary { background: var(--brand-yellow); color: var(--text-primary); }
+        .btn-primary:hover { background: #d99d2f; }
+        .btn-secondary { background: var(--white); color: var(--text-primary); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { background: var(--page-bg); }
+
+        .input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 1rem; background: var(--white); transition: border-color .2s; min-height: 44px; }
+        .input:focus { outline: none; border-color: var(--focus-color); }
+        .input:focus-visible { outline: 2px solid var(--focus-color); outline-offset: -2px; }
+        .input-group { display: flex; gap: 16px; margin-bottom: 24px; }
+        .input-group .input { flex: 1; }
+
+        #dataFlowCanvas { width: 100%; height: 300px; background: var(--white); border-radius: 4px; border: 1px solid var(--border-color); }
+
+        .code-container { background: var(--code-bg); color: #d4d4d4; padding: 16px; border-radius: 4px; margin: 16px 0; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.875rem; line-height: 1.5; }
+        .keyword { color: #569cd6; } .string { color: #ce9178; } .comment { color: #6a9955; }
+
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; margin-top: 24px; }
+        .result-card { background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; transition: .2s; }
+        .result-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px var(--shadow-hover); }
+        .similarity-score { display: inline-block; padding: 4px 12px; background: var(--brand-yellow); color: var(--text-primary); border-radius: 4px; font-size: 0.875rem; font-weight: 500; margin-bottom: 8px; }
+
+        .use-case-card { background: var(--white); border: 1px solid var(--border-color); border-top: 4px solid var(--brand-yellow); border-radius: 8px; padding: 24px; transition: .2s; }
+        .use-case-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px var(--shadow-hover); }
+        .use-case-card.secondary { border-top-color: var(--slate-100); }
+        .use-case-card.tertiary { border-top-color: var(--info); }
+
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-color); }
+
+        .tooltip { position: relative; display: inline-block; border-bottom: 1px dotted var(--text-secondary); cursor: help; }
+        .tooltip .tooltiptext {
+            visibility: hidden; width: 250px; background-color: var(--page-bg); color: var(--text-primary);
+            padding: 12px; border-radius: 4px; border: 1px solid var(--border-color); position: absolute; z-index: 1;
+            bottom: 125%; left: 50%; margin-left: -125px; opacity: 0; transition: opacity .2s; font-size: .875rem; box-shadow: 0 2px 4px var(--shadow-light);
+        }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+
+        .metric-item { background: var(--white); border: 1px solid var(--border-color); border-left: 4px solid var(--brand-yellow); border-radius: 8px; padding: 24px; text-align: center; }
+        .metric-value { font-size: 2rem; font-weight: 300; color: var(--text-primary); margin-bottom: 8px; }
+        .metric-label { font-size: .875rem; color: var(--text-secondary); }
+
+        .loading { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border-color); border-radius: 50%; border-top-color: var(--brand-yellow); animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .progress-steps { overflow-x: auto; padding-bottom: 8px; }
+            .nav-buttons { flex-direction: column; gap: 16px; }
+            h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } h3 { font-size: 1.25rem; }
+        }
+
+        *:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 2px; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+        .success-message { background: var(--white); border: 1px solid var(--success); border-radius: 8px; padding: 32px; text-align: center; margin-top: 24px; }
+        .success-icon { width: 64px; height: 64px; margin: 0 auto 16px; color: var(--success); }
+
+        .feature-list { list-style: none; padding: 0; margin: 24px 0; }
+        .feature-list li { padding: 8px 0; display: flex; align-items: start; gap: 12px; }
+        .feature-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--brand-yellow); margin-top: 2px; }
+
+        .data-flow-container { position: relative; margin: 16px 0; }
+        .flow-node { position: absolute; padding: 8px 16px; background: var(--white); border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.875rem; font-weight: 500; }
+        .flow-arrow { position: absolute; width: 0; height: 0; border-left: 8px solid var(--brand-yellow); border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
+
+        .ai-animation-container { position: relative; height: 300px; background: var(--page-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden; }
+        .ai-stage { position: absolute; padding: 12px; background: var(--white); border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.875rem; text-align: center; transition: all 0.5s ease; }
+        .ai-data-particle { position: absolute; width: 8px; height: 8px; background: var(--brand-yellow); border-radius: 50%; transition: all 1s ease; opacity: 0; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-svg">
+                <img src="https://objectstorage.us-ashburn-1.oraclecloud.com/p/ub_DsEP_Kcyz60PBwg_P8cJE-ElpJkgRIxaqI-BdnerJR7N58DWg298mFgO2USe8/n/c4u02/b/hosted_workshops/o/theo.png" alt="Oracle Logo" style=" height: 40px; width: auto; max-width: 100%;">
+            </div>
+            <h1>GoldenGate 23ai</h1>
+        </div>
+        <button class="btn btn-secondary" onclick="resetDemo()">Reset Demo</button>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-steps">
+            <div class="step active" onclick="goToStep(0)"><div class="step-circle">1</div><div class="step-title">Introduction</div></div>
+            <div class="step" onclick="goToStep(1)"><div class="step-circle">2</div><div class="step-title">Data Flow</div></div>
+            <div class="step" onclick="goToStep(2)"><div class="step-circle">3</div><div class="step-title">Use Cases</div></div>
+            <div class="step" onclick="goToStep(3)"><div class="step-circle">4</div><div class="step-title">AI Integration</div></div>
+            <div class="step" onclick="goToStep(4)"><div class="step-circle">5</div><div class="step-title">Implementation</div></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- 0: Introduction -->
+        <div class="demo-section active" id="section-0">
+            <div class="section-header">
+                <h2>Welcome to Oracle GoldenGate 23ai</h2>
+                <p>The Swiss Army Knife for Real-Time Data Integration</p>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>What is GoldenGate?</h3>
+                    <p>
+                        Oracle GoldenGate is the leading platform for real-time data integration and replication,
+                        enabling high availability, real-time analytics, and operational intelligence across
+                        heterogeneous systems.
+                    </p>
+                    <ul class="feature-list">
+                        <li><svg class="feature-icon" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>Real-time Change Data Capture (CDC)</li>
+                        <li><svg class="feature-icon" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>Transactional Replication</li>
+                        <li><svg class="feature-icon" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>Data Pipelines & Streaming</li>
+                        <li><svg class="feature-icon" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>Stream Analytics</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Why GoldenGate Matters Now</h3>
+                    <p>With the rise of AI and real-time analytics, GoldenGate enables organizations to:</p>
+                    <ul class="feature-list">
+                        <li><strong>$10B+ Revenue:</strong> Since 2010 with 7-figure deals</li>
+                        <li><strong>Enterprise Standard:</strong> Trusted by 80% of Fortune 500</li>
+                        <li><strong>AI-Ready:</strong> Native vector replication for Generative AI</li>
+                        <li><strong>Multicloud:</strong> Unified platform across OCI, Azure, GCP, AWS</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn btn-primary" onclick="nextStep()">Explore Data Flow →</button>
+            </div>
+        </div>
+
+        <!-- 1: Real-Time Data Flow -->
+        <div class="demo-section" id="section-1">
+            <div class="section-header">
+                <h2>Real-Time Data Flow Visualization</h2>
+                <p>See how GoldenGate moves data across systems in real-time</p>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>Simulate a Transaction</h3>
+                    <div style="margin: 16px 0;">
+                        <label style="display:block;margin-bottom:8px;font-weight:500;">Enter transaction data:</label>
+                        <input type="text" id="transactionInput" class="input" value="INSERT INTO orders VALUES (123, 'AI Model Training Data')" style="margin-bottom:16px;">
+                        <button class="btn btn-primary" onclick="simulateTransaction()">Process Transaction</button>
+                    </div>
+                    <div id="flowOutput" style="margin-top:16px;padding:16px;background:var(--page-bg);border-radius:4px;font-family:monospace;font-size:.875rem;max-height:150px;overflow-y:auto;"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Data Flow Diagram</h3>
+                    <canvas id="dataFlowCanvas"></canvas>
+                    <div id="dataFlowStatus" style="margin-top:16px;font-size:.875rem;color:var(--brand-yellow);font-weight:500;">Ready to process transactions</div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <h3>GoldenGate Capabilities</h3>
+                <div class="grid grid-3" style="margin-top: 16px;">
+                    <div class="metric-item"><h4>Real-Time Events</h4><p style="font-size:.875rem;">Change Data Capture & Event Streaming</p></div>
+                    <div class="metric-item"><h4>Data Pipelines</h4><p style="font-size:.875rem;">ETL/ELT, Pub/Sub, Stream Integration</p></div>
+                    <div class="metric-item"><h4>Stream Analytics</h4><p style="font-size:.875rem;">Real-time Processing & Insights</p></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+                <button class="btn btn-primary" onclick="nextStep()">Explore Use Cases →</button>
+            </div>
+        </div>
+
+        <!-- 2: Use Cases -->
+        <div class="demo-section" id="section-2">
+            <div class="section-header">
+                <h2>Common GoldenGate Use Cases</h2>
+                <p>Discover how organizations leverage GoldenGate for real-time data integration</p>
+            </div>
+
+            <div class="grid grid-3">
+                <div class="use-case-card">
+                    <h3>Active-Active HA</h3>
+                    <p>Real-time bidirectional replication for high availability across regions</p>
+                    <ul class="feature-list"><li>Zero downtime migrations</li><li>Disaster recovery</li><li>Load balancing</li><li>Active-active databases</li></ul>
+                    <button class="btn" onclick="showHAUseCase()" style="margin-top:16px;">View Topology</button>
+                </div>
+
+                <div class="use-case-card secondary">
+                    <h3>Analytics Feeds</h3>
+                    <p>Stream operational data to analytics platforms in real-time</p>
+                    <ul class="feature-list"><li>Snowflake integration</li><li>BigQuery streaming</li><li>Databricks feeds</li><li>Real-time dashboards</li></ul>
+                    <button class="btn" onclick="showAnalyticsUseCase()" style="margin-top:16px;">View Demo</button>
+                </div>
+
+                <div class="use-case-card tertiary">
+                    <h3>Stream Analytics</h3>
+                    <p>Process event streams with built-in analytics capabilities</p>
+                    <ul class="feature-list"><li>Real-time processing</li><li>Pattern detection</li><li>Anomaly detection</li><li>Event correlation</li></ul>
+                    <button class="btn" onclick="showStreamAnalyticsUseCase()" style="margin-top:16px;">Try Demo</button>
+                </div>
+            </div>
+
+            <div id="useCaseDemo" style="display:none;margin-top:24px;">
+                <div class="card">
+                    <h3 id="useCaseTitle"></h3>
+                    <div id="useCaseContent"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+                <button class="btn btn-primary" onclick="nextStep()">AI Integration →</button>
+            </div>
+        </div>
+
+        <!-- 3: AI Integration -->
+        <div class="demo-section" id="section-3">
+            <div class="section-header">
+                <h2>GoldenGate AI Integration</h2>
+                <p>Powering next-generation AI with real-time vector data</p>
+            </div>
+
+            <div class="card">
+                <h3>RAG Pipeline with Real-Time Data</h3>
+                <p>Experience how GoldenGate enables better Retrieval Augmented Generation</p>
+                <div class="input-group">
+                    <input type="text" id="ragQuery" class="input" placeholder="Ask: 'What are our current sales metrics?'">
+                    <button class="btn btn-primary" onclick="runRAGDemo()"><span id="ragBtnText">Run RAG</span><span id="ragLoader" class="loading" style="display:none;"></span></button>
+                </div>
+                <div id="ragResults" style="margin-top:24px;"></div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <h3>Real-Time Vector Hub</h3>
+                <ul class="feature-list" style="margin-top:16px;">
+                    <li><svg class="feature-icon" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>Creates a hub for Generative AI enabling fresh business data flow from operational systems</li>
+                    <li><svg class="feature-icon" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>Processes data through embedding models to vector stores and AI applications</li>
+                    <li><svg class="feature-icon" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>Provides trusted answers from up-to-date data, reducing hallucinations</li>
+                    <li><svg class="feature-icon" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>Better RAG (Retrieval Augmented Generation) and improved AI model training</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <h3>AI Benefits</h3>
+                <div class="grid grid-2" style="margin-top:16px;">
+                    <div class="metric-item" style="border-left-color: var(--brand-yellow);">
+                        <div class="metric-value">Better RAG</div>
+                        <div class="metric-label">Real-time context reduces hallucinations</div>
+                    </div>
+                    <div class="metric-item" style="border-left-color: var(--info);">
+                        <div class="metric-value">Fresh Data</div>
+                        <div class="metric-label">Latest information for AI training & inference</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+                <button class="btn btn-primary" onclick="nextStep()">Implementation →</button>
+            </div>
+        </div>
+
+        <!-- 4: Implementation -->
+        <div class="demo-section" id="section-4">
+            <div class="section-header">
+                <h2>Getting Started with GoldenGate</h2>
+                <p>Implementation guides and code examples</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 48px;">
+                <h3>Architecture Overview</h3>
+                <p>GoldenGate 23ai uses a modern microservices architecture:</p>
+                <div class="data-flow-container">
+                    <div class="flow-node" style="left: 10%; top: 20%;"><div style="display:flex; flex-direction:column; align-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="m21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="m3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg><br>Source Database</div></div>
+                    <div class="flow-node" style="left: 40%; top: 20%; background: var(--brand-yellow); color: var(--text-primary);"><div style="display:flex; flex-direction:column; align-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="10" fill="none"/><polygon points="3,7 7,3 17,3 21,7" fill="none"/><path d="M12 2l-2 3h1v2h2V5h1z"/></svg><br>Extract Process</div></div>
+                    <div class="flow-node" style="left: 70%; top: 20%;"><div style="display:flex; flex-direction:column; align-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14,2 14,8 20,8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10,9 9,9 8,9"></polyline></svg><br>Trail Files</div></div>
+                    <div class="flow-node" style="left: 25%; top: 60%;"><div style="display:flex; flex-direction:column; align-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 11h4a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-4m-5-8h4a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-4l-3 3-3-3h-4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="8" y1="6" x2="16" y2="6"/></svg><br>Pump Process</div></div>
+                    <div class="flow-node" style="left: 55%; top: 60%; background: var(--brand-yellow); color: var(--text-primary);"><div style="display:flex; flex-direction:column; align-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0 1 16 0 8 8 0 0 1-16 0z"/><path d="M12 8v8"/><path d="M8 12h8"/></svg><br>Replicat Process</div></div>
+                    <div class="flow-node" style="left: 85%; top: 60%;"><div style="display:flex; flex-direction:column; align-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="m21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="m3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg><br>Target Database</div></div>
+
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <h3>Basic Replication Setup</h3>
+                <div class="code-container"><pre><span class="comment">-- Configure Extract process</span>
+<span class="keyword">ADD EXTRACT</span> ext1, TRANLOG, BEGIN NOW
+<span class="keyword">ADD EXTTRAIL</span> ./dirdat/aa, EXTRACT ext1
+
+<span class="comment">-- Configure Replicat process</span>
+<span class="keyword">ADD REPLICAT</span> rep1, EXTTRAIL ./dirdat/aa
+<span class="keyword">START EXTRACT</span> ext1
+<span class="keyword">START REPLICAT</span> rep1</pre></div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <h3>Vector Replication for AI</h3>
+                <div class="code-container"><pre><span class="comment">-- Replicate vector data to AI applications</span>
+<span class="keyword">CREATE TABLE</span> ai_vectors (
+    id NUMBER PRIMARY KEY,
+    content CLOB,
+    embedding VECTOR(384)
+);
+
+<span class="keyword">ADD EXTRACT</span> ai_ext, TRANLOG, BEGIN NOW
+<span class="keyword">ADD EXTTRAIL</span> ./dirdat/ai, EXTRACT ai_ext
+<span class="keyword">TABLE</span> schema.ai_vectors;
+
+<span class="keyword">ADD REPLICAT</span> ai_rep, EXTTRAIL ./dirdat/ai
+<span class="keyword">MAP</span> schema.ai_vectors, TARGET ai_vectors;</pre></div>
+            </div>
+
+            <div class="card" style="margin-top:24px;background:var(--page-bg);">
+                <h3>Resources & Next Steps</h3>
+                <div class="grid grid-3" style="margin-top:16px;">
+                    <a href="https://www.oracle.com/integration/goldengate/" target="_blank" style="text-decoration:none;">
+                        <div class="metric-item" style="cursor:pointer;"><h4>GoldenGate Home</h4></div>
+                    </a>
+                    <a href="https://livelabs.oracle.com/pls/apex/r/dbpm/livelabs/view-workshop?wid=3980" target="_blank" style="text-decoration:none;">
+                        <div class="metric-item" style="cursor:pointer;"><h4>LiveLabs Workshop</h4></div>
+                    </a>
+                    <a href="https://docs.oracle.com/en/middleware/goldengate/studio-free/23/index.html" target="_blank" style="text-decoration:none;">
+                        <div class="metric-item" style="cursor:pointer;"><h4>Free Edition</h4></div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+                <button class="btn btn-primary" onclick="completeDemo()">Complete Demo ✓</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Demo state
+        let currentStep = 0;
+        const totalSteps = 5;
+        let canvas, ctx;
+        let animationFrame;
+        let aiAnimationRunning = false;
+        let aiParticles = [];
+        let dataFlowStages = [
+            {x:50, y:50, message: "Data captured"},
+            {x:150, y:50, message: "Processing"},
+            {x:250, y:50, message: "Storing"},
+            {x:100, y:200, message: "Pumping"},
+            {x:200, y:200, message: "Replicating"},
+            {x:300, y:200, message: "Committed"}
+        ];
+
+        // Navigation
+        function goToStep(step){ if(step>=0 && step<totalSteps){ currentStep=step; updateUI(); } }
+        function nextStep(){ if(currentStep<totalSteps-1){ currentStep++; updateUI(); } }
+        function previousStep(){ if(currentStep>0){ currentStep--; updateUI(); } }
+        function updateUI(){
+            document.querySelectorAll('.demo-section').forEach((s,i)=> s.classList.toggle('active', i===currentStep));
+            document.querySelectorAll('.step').forEach((st,i)=>{
+                st.classList.remove('active','completed');
+                if(i<currentStep) st.classList.add('completed');
+                else if(i===currentStep) st.classList.add('active');
+            });
+            if(currentStep===1){ setTimeout(()=>{ setupDataFlowCanvas(); drawDataFlow(-1); }, 100); }
+        }
+
+        // Canvas setup for data flow
+        function setupDataFlowCanvas() {
+            const c = document.getElementById('dataFlowCanvas');
+            if (!c) return;
+            canvas = c; ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth; canvas.height = 300;
+        }
+        function drawDataFlow(currentStage = -1) {
+            if (!ctx) return;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            const nodes = [
+                {x:50,y:50,label:"Source DB"},
+                {x:150,y:50,label:"Extract"},
+                {x:250,y:50,label:"Trail"},
+                {x:100,y:200,label:"Pump"},
+                {x:200,y:200,label:"Replicat"},
+                {x:300,y:200,label:"Target DB"}
+            ];
+            nodes.forEach((n,i)=>{
+                if(i <= currentStage){
+                    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                    ctx.shadowBlur = 15;
+                    ctx.shadowOffsetX = 3;
+                    ctx.shadowOffsetY = 3;
+                    ctx.fillStyle = '#F1B13F';
+                    ctx.beginPath();
+                    ctx.arc(n.x,n.y,20,0,Math.PI*2);
+                    ctx.fill();
+                    ctx.shadowColor = 'transparent';
+                    ctx.fillStyle = '#161513';
+                    ctx.font = '10px Arial, sans-serif';
+                    ctx.fillText(dataFlowStages[i].message, n.x-30, n.y+50);
+                } else {
+                    ctx.fillStyle = '#ccc';
+                    ctx.beginPath();
+                    ctx.arc(n.x,n.y,20,0,Math.PI*2);
+                    ctx.fill();
+                }
+                ctx.fillStyle = '#161513';
+                ctx.font = '12px Arial, sans-serif';
+                ctx.fillText(n.label, n.x-25, n.y+35);
+            });
+            ctx.strokeStyle = '#F1B13F'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(70,50); ctx.lineTo(130,50); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(170,50); ctx.lineTo(230,50); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(120,70); ctx.lineTo(120,180); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(180,70); ctx.lineTo(180,180); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(120,200); ctx.lineTo(180,200); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(220,200); ctx.lineTo(280,200); ctx.stroke();
+        }
+
+        // Simulate transaction
+        function simulateTransaction(){
+            const input = (document.getElementById('transactionInput').value || '').trim();
+            const out = document.getElementById('flowOutput');
+            const statusDiv = document.getElementById('dataFlowStatus');
+            if(!input){ out.innerHTML = '<p>Please enter transaction data</p>'; return; }
+
+            statusDiv.textContent = "Ready to process transactions";
+            out.innerHTML = '<p>Processing transaction...</p>';
+            setTimeout(()=>{
+                out.innerHTML = `
+                    <strong>Transaction Processed:</strong><br>
+                    ${input}<br><br>
+                    <strong>Steps:</strong><br>
+                    1. Captured by Extract process<br>
+                    2. Written to trail file<br>
+                    3. Pumped to target<br>
+                    4. Applied by Replicat<br>
+                    5. Committed in target database<br><br>
+                    <strong>Latency:</strong> < 1 second
+                `;
+                animateTransactionFlow();
+            }, 1000);
+        }
+
+        function animateTransactionFlow() {
+            const statusDiv = document.getElementById('dataFlowStatus');
+            let currentStage = -1;
+            let particle = {x: 50, y: 50};
+            let stageIndex = 0;
+            let animating = true;
+            const speed = 1.5;
+
+            function animate() {
+                if (!animating) return;
+
+                const target = dataFlowStages[stageIndex];
+                const dx = target.x - particle.x;
+                const dy = target.y - particle.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < speed) {
+                    particle.x = target.x;
+                    particle.y = target.y;
+                    currentStage = stageIndex;
+                    stageIndex++;
+                    if (stageIndex >= dataFlowStages.length) {
+                        animating = false;
+                        setTimeout(() => {
+                            statusDiv.textContent = "Transaction completed successfully";
+                        }, 500);
+                        return;
+                    }
+                } else {
+                    particle.x += (dx / dist) * speed;
+                    particle.y += (dy / dist) * speed;
+                }
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawDataFlow(currentStage);
+                ctx.shadowColor = 'rgba(241,177,63,0.8)';
+                ctx.shadowBlur = 20;
+                ctx.fillStyle = '#F1B13F';
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, 10, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowColor = 'transparent';
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // Use case demos
+        function showHAUseCase(){
+            const demo=document.getElementById('useCaseDemo');
+            const title=document.getElementById('useCaseTitle');
+            const content=document.getElementById('useCaseContent');
+            demo.style.display='block'; title.textContent='Active-Active High Availability';
+            content.innerHTML = `
+                <div class="data-flow-container" style="height:200px;">
+                    <div class="flow-node" style="left: 10%; top: 30%;">Primary Site A</div>
+                    <div class="flow-node" style="left: 70%; top: 30%;">Primary Site B</div>
+                    <div class="flow-arrow" style="left: 35%; top: 35%; transform: rotate(180deg);"></div>
+                    <div class="flow-arrow" style="left: 55%; top: 35%;"></div>
+                </div>
+                <p>Real-time bidirectional replication ensures both sites are active and synchronized.</p>
+            `;
+        }
+        function showAnalyticsUseCase(){
+            const demo=document.getElementById('useCaseDemo');
+            const title=document.getElementById('useCaseTitle');
+            const content=document.getElementById('useCaseContent');
+            demo.style.display='block'; title.textContent='Real-Time Analytics Feeds';
+            content.innerHTML = `
+                <p>Stream transaction data to analytics platforms:</p>
+                <div style="margin:16px 0;">
+                    <button class="btn btn-primary" onclick="simulateAnalyticsFeed()">Start Analytics Feed</button>
+                </div>
+                <div id="analyticsFeed"></div>
+            `;
+        }
+        function simulateAnalyticsFeed(){
+            const div=document.getElementById('analyticsFeed');
+            div.innerHTML='<p>Starting feed...</p>';
+            setTimeout(()=>{
+                div.innerHTML = `
+                    <div class="result-card" style="margin-top:16px;">
+                        <h4>Analytics Update</h4>
+                        <p>Order #12345 processed → BigQuery updated</p>
+                        <small>Latency: 200ms</small>
+                    </div>
+                    <div class="result-card" style="margin-top:16px;">
+                        <h4>Analytics Update</h4>
+                        <p>Customer profile updated → Snowflake synced</p>
+                        <small>Latency: 150ms</small>
+                    </div>
+                `;
+            }, 1000);
+        }
+        function showStreamAnalyticsUseCase(){
+            const demo=document.getElementById('useCaseDemo');
+            const title=document.getElementById('useCaseTitle');
+            const content=document.getElementById('useCaseContent');
+            demo.style.display='block'; title.textContent='Stream Analytics Demo';
+            content.innerHTML = `
+                <p>Process streaming events in real-time:</p>
+                <div style="margin:16px 0;">
+                    <input type="text" id="eventInput" class="input" placeholder="Enter event data (e.g., login attempt)">
+                    <button class="btn btn-primary" style="margin-top:16px;" onclick="processEvent()">Process Event</button>
+                </div>
+                <div id="eventResults"></div>
+            `;
+        }
+        function processEvent(){
+            const event=(document.getElementById('eventInput').value||'').trim();
+            const div=document.getElementById('eventResults');
+            if(!event){ div.innerHTML='<p>Please enter event data</p>'; return; }
+            div.innerHTML='<p>Analyzing...</p>';
+            setTimeout(()=>{
+                const analysis = event.toLowerCase().includes('login') ? 'Security Alert: Multiple login attempts detected' :
+                                event.toLowerCase().includes('order') ? 'Business Metric: Order value trending up' :
+                                'Event processed successfully';
+                div.innerHTML = `
+                    <div class="result-card" style="margin-top:16px;">
+                        <h4>Stream Analysis Result</h4>
+                        <p>${analysis}</p>
+                        <small>Processed in: 50ms</small>
+                    </div>
+                `;
+            }, 500);
+        }
+
+        // AI Integration animations
+        function initAIAnimation(){
+            const container = document.getElementById('aiAnimationContainer');
+            if(!container) return;
+
+            // Reset particles
+            aiParticles = [];
+
+            // Clear canvas initially
+            const ctx = container.getContext('2d');
+            ctx.clearRect(0,0,container.width,container.height);
+        }
+
+        function startAIAnimation(){
+            const container = document.getElementById('aiAnimationContainer');
+            if(!container || aiAnimationRunning) return;
+
+            aiAnimationRunning = true;
+
+            // Start animation loop
+            function animate(){
+                if(!aiAnimationRunning) return;
+
+                // Create new particles occasionally
+                if(Math.random() < 0.1){
+                    aiParticles.push({
+                        x: 50, y: 60, vx: 2, vy: 0, stage: 0, opacity: 1
+                    });
+                }
+
+                // Update particles
+                aiParticles.forEach(p=>{
+                    p.x += p.vx; p.y += p.vy;
+                    if(p.x > 150 && p.stage === 0){ p.vx = 0; p.vy = -1; p.stage = 1; }
+                    if(p.y < 60 && p.stage === 1){ p.vx = 2; p.vy = 0; p.stage = 2; }
+                    if(p.x > 250 && p.stage === 2){ p.vx = 0; p.vy = 1; p.stage = 3; }
+                    if(p.y > 140 && p.stage === 3){ p.vx = 2; p.vy = 0; p.stage = 4; }
+                    if(p.x > 350){ p.opacity -= 0.05; }
+                    if(p.opacity <= 0) p.dead = true;
+                });
+
+                aiParticles = aiParticles.filter(p=>!p.dead);
+
+                // Draw particles
+                const ctx = container.getContext('2d');
+                ctx.clearRect(0,0,container.width,container.height);
+
+                aiParticles.forEach(p=>{
+                    ctx.globalAlpha = p.opacity;
+                    ctx.fillStyle = '#F1B13F';
+                    ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2); ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+
+                animationFrame = requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        function stopAIAnimation(){
+            aiAnimationRunning = false;
+            if(animationFrame){
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+            // Clear particles
+            aiParticles = [];
+            // Clear canvas
+            const container = document.getElementById('aiAnimationContainer');
+            if(container){
+                const ctx = container.getContext('2d');
+                ctx.clearRect(0,0,container.width,container.height);
+            }
+        }
+
+        function toggleAIAnimation(){
+            const btn = document.getElementById('animationTriggerBtn');
+            if(aiAnimationRunning){
+                stopAIAnimation();
+                btn.textContent = 'Start Animation';
+            } else {
+                startAIAnimation();
+                btn.textContent = 'Stop Animation';
+            }
+        }
+
+        // RAG Demo
+        function runRAGDemo(){
+            const query = document.getElementById('ragQuery').value.toLowerCase();
+            const resultsDiv = document.getElementById('ragResults');
+            const btn = document.getElementById('ragBtnText');
+            const loader = document.getElementById('ragLoader');
+
+            if(!query){ resultsDiv.innerHTML = '<p>Please enter a query</p>'; return; }
+            btn.style.display='none'; loader.style.display='inline-block';
+
+            setTimeout(()=>{
+                const responses = {
+                    'sales': 'Based on latest real-time data: Q4 sales are up 15% with AI model adoption driving growth.',
+                    'metrics': 'Current metrics show: 99.9% uptime, <200ms latency, 50TB data processed daily.',
+                    'performance': 'Performance metrics: CPU utilization at 65%, memory at 70%, network throughput optimal.',
+                    'default': 'Query processed using real-time vector search. Fresh business data ensures accurate, hallucination-free responses.'
+                };
+
+                const response = Object.keys(responses).find(k=>query.includes(k)) ? responses[Object.keys(responses).find(k=>query.includes(k))] : responses.default;
+
+                resultsDiv.innerHTML = `
+                    <div class="card">
+                        <h4>RAG Response</h4>
+                        <p>${response}</p>
+                        <small style="color: var(--success);">✓ Powered by real-time vector data from GoldenGate</small>
+                    </div>
+                `;
+
+                btn.style.display='inline'; loader.style.display='none';
+            }, 1500);
+        }
+
+        // Misc
+        function resetDemo(){
+            currentStep=0; updateUI();
+            const u=document.getElementById('useCaseDemo'); if(u) u.style.display='none';
+            setupDataFlowCanvas(); drawDataFlow(-1);
+            initAIAnimation();
+        }
+        function completeDemo(){
+            const section=document.getElementById('section-4');
+            const div=document.createElement('div');
+            div.className='success-message';
+            div.innerHTML=`
+                <svg class="success-icon" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 32l8 8 16-16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <h2 style="margin-bottom:8px;">Demo Complete!</h2>
+                <p>You've explored Oracle GoldenGate 23ai capabilities for real-time data integration and AI.</p>
+                <div style="margin-top:24px;display:flex;gap:16px;justify-content:center;">
+                    <button class="btn btn-secondary" onclick="resetDemo()">Restart Demo</button>
+                    <a href="https://www.oracle.com/integration/goldengate/" target="_blank"><button class="btn btn-primary">Learn More</button></a>
+                </div>`;
+            section.appendChild(div);
+            div.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+
+        // Init
+        function initDemo(){
+            setupDataFlowCanvas();
+            drawDataFlow(-1);
+            initAIAnimation();
+            setupKeyboardNavigation();
+        }
+        function setupKeyboardNavigation(){
+            document.addEventListener('keydown',(e)=>{
+                if(e.key==='ArrowRight') nextStep();
+                else if(e.key==='ArrowLeft') previousStep();
+                else if(e.key>='1' && e.key<='5') goToStep(parseInt(e.key)-1);
+            });
+        }
+        window.addEventListener('DOMContentLoaded', initDemo);
+        window.addEventListener('resize', ()=>{ setupDataFlowCanvas(); drawDataFlow(-1); });
+
+        // Progress saving
+        function saveProgress(){ try{ localStorage.setItem('goldengateDemoStep', currentStep);}catch(e){} }
+        function loadProgress(){ try{ const s=localStorage.getItem('goldengateDemoStep'); if(s!==null){ currentStep=parseInt(s); updateUI(); } }catch(e){} }
+        setInterval(saveProgress, 5000);
+        window.addEventListener('DOMContentLoaded', loadProgress);
+    </script>
+</body>
+</html>
+<content>
+</write_to_file>
