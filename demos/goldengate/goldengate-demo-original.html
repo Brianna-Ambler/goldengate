@@ -5,22 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oracle GoldenGate 23ai Bidirectional Replication</title>
     <style>
-        :root {
-            --brand-yellow: #F1B13F;
-            --slate-100: #3C4545;
-            --page-bg: #F1EFED;
-            --white: #FFFFFF;
-            --text-primary: #3C4545;
-            --text-secondary: #697778;
-            --border-color: #C2D4D4;
-            --shadow-light: rgba(60, 69, 69, 0.08);
-            --shadow-hover: rgba(60, 69, 69, 0.12);
-            --focus-color: #C74634;
-            --button-hover: #A0352A;
-            --success: #4CAF50;
-            --info: #C2D4D4;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -28,39 +12,36 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            background: var(--page-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
-            color: var(--text-primary);
-            font-size: 16px;
-            line-height: 1.5;
+            padding: 20px;
+            color: #2c3e50;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: var(--white);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 2px 4px var(--shadow-light);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             margin-right: 380px; /* Make room for side panels */
         }
 
         h1 {
             text-align: center;
-            color: var(--text-primary);
+            color: #2c3e50;
             margin-bottom: 30px;
             font-size: 2.5em;
-            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .replication-flow {
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            background: white;
             padding: 40px;
-            box-shadow: 0 2px 4px var(--shadow-light);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
             position: relative;
             overflow: hidden;
@@ -69,10 +50,9 @@
         .replication-flow h3 {
             text-align: center;
             margin-bottom: 40px;
-            color: var(--text-primary);
+            color: #2c3e50;
             font-size: 1.5em;
-            font-weight: 400;
-            border-bottom: 3px solid var(--brand-yellow);
+            border-bottom: 3px solid #e74c3c;
             padding-bottom: 10px;
         }
 
@@ -95,15 +75,15 @@
         }
 
         .site-label {
-            font-weight: 500;
-            color: var(--text-primary);
+            font-weight: bold;
+            color: #2c3e50;
             margin-bottom: 20px;
             font-size: 1.3em;
             text-align: center;
             padding: 12px 24px;
-            background: var(--page-bg);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+            border-radius: 25px;
+            border: 2px solid #95a5a6;
         }
 
         .database {
@@ -155,6 +135,7 @@
             color: white;
             font-weight: bold;
             font-size: 0.9em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
             z-index: 5;
             text-align: center;
         }
@@ -242,22 +223,24 @@
             justify-content: center;
             font-size: 8px;
             font-weight: bold;
-            color: var(--white);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
         .data-packet.insert {
-            background: var(--success);
-            border: 2px solid var(--success);
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border: 2px solid #1e8449;
         }
 
         .data-packet.update {
-            background: var(--info);
-            border: 2px solid var(--info);
+            background: linear-gradient(135deg, #3498db, #5dade2);
+            border: 2px solid #2980b9;
         }
 
         .data-packet.delete {
-            background: var(--focus-color);
-            border: 2px solid var(--focus-color);
+            background: linear-gradient(135deg, #e74c3c, #ec7063);
+            border: 2px solid #c0392b;
         }
 
         .connection-line {
@@ -293,24 +276,23 @@
         }
 
         .network-zone {
-            position: relative;
-            min-width: 200px;
-            height: 80px; /* Height to match the space between lines */
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-top: 1%; /* Adjust to center better between lines */
+            gap: 20px;
+            min-width: 200px;
         }
 
         .network-label {
-            color: var(--text-secondary);
+            color: #7f8c8d;
             font-size: 1.1em;
-            font-weight: 500;
+            font-weight: bold;
             text-align: center;
-            padding: 6px 8px;
-            background: var(--page-bg);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+            padding: 10px;
+            background: rgba(127, 140, 141, 0.1);
+            border-radius: 15px;
+            border: 2px dashed #bdc3c7;
         }
 
         .activity-log-panel {
@@ -318,21 +300,21 @@
             top: 120px;
             right: 20px;
             width: 350px;
-            background: var(--white);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
             padding: 20px;
-            box-shadow: 0 2px 4px var(--shadow-light);
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             font-size: 0.8em;
+            backdrop-filter: blur(10px);
             z-index: 1000;
             max-height: 300px;
         }
 
         .activity-log-panel h4 {
             margin-bottom: 15px;
-            color: var(--brand-yellow);
-            border-bottom: 1px solid var(--brand-yellow);
+            color: #3498db;
+            border-bottom: 1px solid #3498db;
             padding-bottom: 5px;
             font-size: 1.1em;
         }
@@ -342,20 +324,20 @@
             top: 440px;
             right: 20px;
             width: 350px;
-            background: var(--white);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
             padding: 20px;
-            box-shadow: 0 2px 4px var(--shadow-light);
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             font-size: 0.85em;
+            backdrop-filter: blur(10px);
             z-index: 1000;
         }
 
         .metrics-panel h4 {
             margin-bottom: 15px;
-            color: var(--brand-yellow);
-            border-bottom: 1px solid var(--brand-yellow);
+            color: #3498db;
+            border-bottom: 1px solid #3498db;
             padding-bottom: 5px;
         }
 
@@ -364,22 +346,21 @@
             justify-content: space-between;
             margin: 10px 0;
             padding: 8px;
-            border-radius: 4px;
-            background: var(--page-bg);
-            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .metric-value {
-            font-weight: 500;
-            color: var(--success);
+            font-weight: bold;
+            color: #2ecc71;
         }
 
         .metric-value.warning {
-            color: var(--brand-yellow);
+            color: #f39c12;
         }
 
         .metric-value.error {
-            color: var(--focus-color);
+            color: #e74c3c;
         }
 
         .toast-container {
@@ -391,26 +372,26 @@
         }
 
         .toast {
-            background: var(--text-primary);
-            color: var(--white);
+            background: #2c3e50;
+            color: white;
             padding: 12px 24px;
-            border-radius: 8px;
+            border-radius: 25px;
             margin: 5px 0;
-            box-shadow: 0 2px 4px var(--shadow-light);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             animation: toast-slide-in 0.3s ease-out;
+            backdrop-filter: blur(10px);
         }
 
-        .toast.success { border-left: 4px solid var(--success); }
-        .toast.error { border-left: 4px solid var(--focus-color); }
-        .toast.info { border-left: 4px solid var(--info); }
-        .toast.warning { border-left: 4px solid var(--brand-yellow); }
+        .toast.success { border-left: 4px solid #27ae60; }
+        .toast.error { border-left: 4px solid #e74c3c; }
+        .toast.info { border-left: 4px solid #3498db; }
+        .toast.warning { border-left: 4px solid #f39c12; }
 
         .controls-panel {
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            background: white;
             padding: 25px;
-            box-shadow: 0 2px 4px var(--shadow-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
             display: flex;
             gap: 25px;
@@ -429,43 +410,38 @@
         .control-button {
             padding: 12px 24px;
             border: none;
-            border-radius: 4px;
-            background: var(--slate-100);
-            color: var(--white);
-            font-weight: 500;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
             min-width: 140px;
         }
 
         .control-button:hover {
-            background: #5a6869;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .control-button.stop {
-            background: var(--focus-color);
-        }
-
-        .control-button.stop:hover {
-            background: var(--button-hover);
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
         }
 
         .control-button.start {
-            background: var(--success);
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
         }
 
         .control-button.simulate {
-            background: var(--brand-yellow);
-            color: var(--text-primary);
+            background: linear-gradient(135deg, #f39c12, #e67e22);
         }
 
         .log-container {
             max-height: 200px;
             overflow-y: auto;
-            background: var(--page-bg);
-            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
             padding: 10px;
-            border: 1px solid var(--border-color);
         }
 
         .log-entry {
@@ -474,22 +450,22 @@
             border-radius: 3px;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
-            border-left: 3px solid var(--info);
-            background: var(--white);
-            transition: all 0.2s ease;
+            border-left: 3px solid #3498db;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
 
         .log-entry:hover {
-            background: var(--page-bg);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .log-entry.west { border-left-color: var(--success); }
-        .log-entry.east { border-left-color: var(--brand-yellow); }
-        .log-entry.extract { border-left-color: var(--success); }
-        .log-entry.distribution { border-left-color: var(--info); }
-        .log-entry.replicat { border-left-color: var(--brand-yellow); }
-        .log-entry.error { border-left-color: var(--focus-color); }
-        .log-entry.warning { border-left-color: var(--brand-yellow); }
+        .log-entry.west { border-left-color: #27ae60; }
+        .log-entry.east { border-left-color: #9b59b6; }
+        .log-entry.extract { border-left-color: #27ae60; }
+        .log-entry.distribution { border-left-color: #3498db; }
+        .log-entry.replicat { border-left-color: #9b59b6; }
+        .log-entry.error { border-left-color: #e74c3c; }
+        .log-entry.warning { border-left-color: #f39c12; }
 
         .status-indicator {
             position: absolute;
@@ -498,20 +474,20 @@
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            border: 2px solid var(--white);
+            border: 2px solid white;
         }
 
         .status-indicator.running {
-            background: var(--success);
+            background: #27ae60;
             animation: pulse 2s infinite;
         }
 
         .status-indicator.stopped {
-            background: var(--focus-color);
+            background: #e74c3c;
         }
 
         .status-indicator.warning {
-            background: var(--brand-yellow);
+            background: #f39c12;
             animation: blink 1s infinite;
         }
 
@@ -542,10 +518,10 @@
             top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--focus-color);
-            color: var(--white);
+            background: #e74c3c;
+            color: white;
             padding: 2px 8px;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 0.6em;
             animation: blink 1s infinite;
             z-index: 10;
@@ -554,7 +530,7 @@
         .direction-indicator {
             position: absolute;
             font-size: 24px;
-            color: var(--text-secondary);
+            color: #7f8c8d;
             z-index: 100;
             animation: float 3s infinite ease-in-out;
         }
@@ -564,17 +540,17 @@
         }
 
         @keyframes process-pulse {
-            0% {
+            0% { 
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(241, 177, 63, 0.7);
+                box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7);
             }
-            50% {
+            50% { 
                 transform: scale(1.08);
-                box-shadow: 0 0 15px 5px rgba(241, 177, 63, 0.6);
+                box-shadow: 0 0 15px 5px rgba(241, 196, 15, 0.6);
             }
-            100% {
+            100% { 
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(241, 177, 63, 0);
+                box-shadow: 0 0 0 0 rgba(241, 196, 15, 0);
             }
         }
 
@@ -583,67 +559,135 @@
         }
 
         @keyframes database-pulse {
-            0% {
+            0% { 
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
             }
-            50% {
+            50% { 
                 transform: scale(1.05);
-                box-shadow: 0 0 20px 10px rgba(76, 175, 80, 0.4);
+                box-shadow: 0 0 20px 10px rgba(46, 204, 113, 0.4);
             }
-            100% {
+            100% { 
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
             }
         }
 
         .db-body.highlight {
-            background: var(--success) !important;
+            background: linear-gradient(to right, #2ecc71 0%, #27ae60 50%, #2ecc71 100%) !important;
             transition: background 0.3s ease;
         }
-
-        /* Header */
-        .header {
-            background: var(--white);
-            height: 56px;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky; top: 0; z-index: 100;
-        }
-        .logo { display: flex; align-items: center; }
-        .logo-svg { width: 80px; height: 32px; display: flex; align-items: center; justify-content: center; }
-        .logo h1 { font-size: 1.25rem; font-weight: 400; color: var(--text-primary); margin: 0; line-height: 1; }
-
-        .btn {
-            padding: 12px 24px; background: var(--slate-100); color: var(--white); border: none; border-radius: 4px;
-            font-size: 1rem; font-weight: 500; cursor: pointer; transition: background .2s; min-height: 44px;
-            display: inline-flex; align-items: center; justify-content: center;
-        }
-        .btn:hover { background: #5a6869; }
-        .btn:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 2px; }
-        .btn-primary { background: var(--brand-yellow); color: var(--text-primary); }
-        .btn-primary:hover { background: #d99d2f; }
-        .btn-secondary { background: var(--white); color: var(--text-primary); border: 1px solid var(--border-color); }
-        .btn-secondary:hover { background: var(--page-bg); }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            <div class="logo-svg">
-                <img src="https://objectstorage.us-ashburn-1.oraclecloud.com/p/ub_DsEP_Kcyz60PBwg_P8cJE-ElpJkgRIxaqI-BdnerJR7N58DWg298mFgO2USe8/n/c4u02/b/hosted_workshops/o/theo.png" alt="Oracle Logo" style=" height: 40px; width: auto; max-width: 100%;">
-            </div>
-            <h1>GoldenGate 23ai</h1>
-        </div>
-        <button class="btn btn-secondary" onclick="resetDemo()">Reset Demo</button>
-    </header>
-
     <div class="container">
         <h1>Oracle GoldenGate 23ai Bidirectional Replication</h1>
+        
+        <div class="replication-flow">
+            <h3>West ⇄ East Bidirectional Microservices Architecture</h3>
+            
+            <div class="flow-diagram">
+                <!-- West Database -->
+                <div class="site" id="west-site">
+                    <div class="site-label">West Database</div>
+                    <div class="database">
+                        <div class="db-top"></div>
+                        <div class="db-body">
+                            <div class="db-label">Oracle DB<br>West</div>
+                        </div>
+                        <div class="db-bottom"></div>
+                    </div>
+                    
+                    <!-- West Side Components -->
+                    <div class="process-stack">
+                        <!-- West to East Source Components -->
+                        <div class="process-row" style="margin-bottom: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="process-box extract" id="west-extract">
+                                    Extract
+                                    <div class="status-indicator running" id="west-extract-status"></div>
+                                </div>
+                                <div style="color: #7f8c8d; font-size: 1.2em;">→</div>
+                                <div class="trail-file" id="west-local-trail">Local<br>Trail</div>
+                                <div style="color: #7f8c8d; font-size: 1.2em;">→</div>
+                                <div class="process-box distribution" id="west-distribution">
+                                    Dist<br>Path
+                                    <div class="status-indicator running" id="west-distribution-status"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- East to West Target Components -->
+                        <div class="process-row">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="process-box replicat" id="west-replicat">
+                                    Replicat
+                                    <div class="status-indicator running" id="west-replicat-status"></div>
+                                </div>
+                                <div style="color: #7f8c8d; font-size: 1.2em;">←</div>
+                                <div class="trail-file" id="west-remote-trail">Remote<br>Trail</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Zone -->
+                <div class="network-zone">
+                    <div class="network-label">
+                        Network<br>
+                        <small>Encrypted TCP/IP</small>
+                    </div>
+                </div>
+
+                <!-- East Database -->
+                <div class="site" id="east-site">
+                    <div class="site-label">East Database</div>
+                    <div class="database">
+                        <div class="db-top"></div>
+                        <div class="db-body">
+                            <div class="db-label">Oracle DB<br>East</div>
+                        </div>
+                        <div class="db-bottom"></div>
+                    </div>
+                    
+                    <!-- East Side Components -->
+                    <div class="process-stack">
+                        <!-- West to East Target Components -->
+                        <div class="process-row" style="margin-bottom: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="trail-file" id="east-remote-trail">Remote<br>Trail</div>
+                                <div style="color: #7f8c8d; font-size: 1.2em;">→</div>
+                                <div class="process-box replicat" id="east-replicat">
+                                    Replicat
+                                    <div class="status-indicator running" id="east-replicat-status"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- East to West Source Components -->
+                        <div class="process-row">
+                            <div style="display: flex; align-items: center; gap: 10px; flex-direction: row-reverse;">
+                                <div class="process-box extract" id="east-extract">
+                                    Extract
+                                    <div class="status-indicator running" id="east-extract-status"></div>
+                                </div>
+                                <div style="color: #7f8c8d; font-size: 1.2em;">←</div>
+                                <div class="trail-file" id="east-local-trail">Local<br>Trail</div>
+                                <div style="color: #7f8c8d; font-size: 1.2em;">←</div>
+                                <div class="process-box distribution" id="east-distribution">
+                                    Dist<br>Path
+                                    <div class="status-indicator running" id="east-distribution-status"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Connection Lines for Bidirectional Flow -->
+            <div class="connection-line west-to-east" id="west-to-east-1" style="top: 350px; left: 420px; width: 680px;"></div>
+            <div class="connection-line east-to-west" id="east-to-west-1" style="top: 430px; left: 420px; width: 680px;"></div>
+        </div>
 
         <div class="controls-panel">
             <div class="control-group">
@@ -665,115 +709,9 @@
                 <button class="control-button" id="add-lag">Add Network Lag</button>
             </div>
             <div class="control-group">
-                <label style="color: var(--text-primary); font-weight: 500;">Speed: </label>
+                <label style="color: #2c3e50; font-weight: bold;">Speed: </label>
                 <input type="range" id="speed-control" min="0.5" max="3" step="0.5" value="0.5" style="width: 100px;">
             </div>
-        </div>
-
-        <div class="replication-flow">
-            <h3>West ⇄ East Bidirectional Microservices Architecture</h3>
-
-            <div class="flow-diagram">
-                <!-- West Database -->
-                <div class="site" id="west-site">
-                    <div class="site-label">West Database</div>
-                        <div class="database">
-                        <div class="db-top"></div>
-                        <div class="db-body">
-                            <div class="db-label"><strong>Oracle Database</strong><br>West</div>
-                        </div>
-                        <div class="db-bottom"></div>
-                    </div>
-
-                    <!-- West Side Components -->
-                    <div class="process-stack">
-                        <!-- West to East Source Components -->
-                        <div class="process-row" style="margin-bottom: 20px;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="process-box extract" id="west-extract">
-                                    Extract
-                                    <div class="status-indicator running" id="west-extract-status"></div>
-                                </div>
-                                <div style="color: var(--text-secondary); font-size: 1.2em;">→</div>
-                                <div class="trail-file" id="west-local-trail">Local<br>Trail</div>
-                                <div style="color: var(--text-secondary); font-size: 1.2em;">→</div>
-                                <div class="process-box distribution" id="west-distribution">
-                                    Dist<br>Path
-                                    <div class="status-indicator running" id="west-distribution-status"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- East to West Target Components -->
-                        <div class="process-row">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="process-box replicat" id="west-replicat">
-                                    Replicat
-                                    <div class="status-indicator running" id="west-replicat-status"></div>
-                                </div>
-                                <div style="color: var(--text-secondary); font-size: 1.2em;">←</div>
-                                <div class="trail-file" id="west-remote-trail">Remote<br>Trail</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Network Zone -->
-                <div class="network-zone">
-                    <div class="network-label">
-                        Network<br>
-                        <small>Encrypted TCP/IP</small>
-                    </div>
-                </div>
-
-                <!-- East Database -->
-                <div class="site" id="east-site">
-                    <div class="site-label">East Database</div>
-                    <div class="database">
-                        <div class="db-top"></div>
-                        <div class="db-body">
-                            <div class="db-label"><strong>Oracle Database</strong><br>East</div>
-                        </div>
-                        <div class="db-bottom"></div>
-                    </div>
-
-                    <!-- East Side Components -->
-                    <div class="process-stack">
-                        <!-- West to East Target Components -->
-                        <div class="process-row" style="margin-bottom: 20px;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div class="trail-file" id="east-remote-trail">Remote<br>Trail</div>
-                                <div style="color: var(--text-secondary); font-size: 1.2em;">→</div>
-                                <div class="process-box replicat" id="east-replicat">
-                                    Replicat
-                                    <div class="status-indicator running" id="east-replicat-status"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- East to West Source Components -->
-                        <div class="process-row">
-                            <div style="display: flex; align-items: center; gap: 10px; flex-direction: row-reverse;">
-                                <div class="process-box extract" id="east-extract">
-                                    Extract
-                                    <div class="status-indicator running" id="east-extract-status"></div>
-                                </div>
-                                <div style="color: var(--text-secondary); font-size: 1.2em;">←</div>
-                                <div class="trail-file" id="east-local-trail">Local<br>Trail</div>
-                                <div style="color: var(--text-secondary); font-size: 1.2em;">←</div>
-                                <div class="process-box distribution" id="east-distribution">
-                                    Dist<br>Path
-                                    <div class="status-indicator running" id="east-distribution-status"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Connection Lines for Bidirectional Flow -->
-            <div class="connection-line west-to-east" id="west-to-east-1" style="top: 350px; left: 420px; width: 680px;"></div>
-            <div class="connection-line east-to-west" id="east-to-west-1" style="top: 430px; left: 420px; width: 680px;"></div>
         </div>
     </div>
 
@@ -1193,39 +1131,39 @@
                 const eastRemoteTrail = document.getElementById('east-remote-trail');
                 const eastDistPath = document.getElementById('east-distribution');
                 const westRemoteTrail = document.getElementById('west-remote-trail');
-
+                
                 if (westDistPath && eastRemoteTrail && eastDistPath && westRemoteTrail) {
                     const flowDiagram = document.querySelector('.flow-diagram');
                     const flowRect = flowDiagram.getBoundingClientRect();
-
+                    
                     const westDistRect = westDistPath.getBoundingClientRect();
                     const eastRemoteRect = eastRemoteTrail.getBoundingClientRect();
                     const eastDistRect = eastDistPath.getBoundingClientRect();
                     const westRemoteRect = westRemoteTrail.getBoundingClientRect();
-
-                    // Update West to East line - spans from west distribution to east remote trail
+                    
+                    // Update West to East line
                     const westToEastLine = document.getElementById('west-to-east-1');
                     const westToEastStart = westDistRect.right - flowRect.left;
                     const westToEastEnd = eastRemoteRect.left - flowRect.left;
                     const westToEastWidth = westToEastEnd - westToEastStart;
                     const westToEastTop = westDistRect.top - flowRect.top + (westDistRect.height / 2);
-
+                    
                     westToEastLine.style.left = westToEastStart + 'px';
                     westToEastLine.style.top = westToEastTop + 'px';
                     westToEastLine.style.width = westToEastWidth + 'px';
-
-                    // Update East to West line - spans from west remote trail to east distribution
+                    
+                    // Update East to West line
                     const eastToWestLine = document.getElementById('east-to-west-1');
-                    const eastToWestStart = westToEastStart;
-                    const eastToWestEnd = westToEastEnd;
+                    const eastToWestStart = westRemoteRect.right - flowRect.left;
+                    const eastToWestEnd = eastDistRect.left - flowRect.left;
                     const eastToWestWidth = eastToWestEnd - eastToWestStart;
                     const eastToWestTop = eastDistRect.top - flowRect.top + (eastDistRect.height / 2);
-
+                    
                     eastToWestLine.style.left = eastToWestStart + 'px';
                     eastToWestLine.style.top = eastToWestTop + 'px';
                     eastToWestLine.style.width = eastToWestWidth + 'px';
                 }
-
+                
                 // Add/remove active class based on running state
                 const lines = document.querySelectorAll('.connection-line');
                 lines.forEach(line => {
@@ -1325,46 +1263,9 @@
             }
         }
 
-        // Reset demo function
-        function resetDemo() {
-            // Stop any running intervals
-            if (window.demoInstance) {
-                if (window.demoInstance.isRunning) {
-                    window.demoInstance.stopReplication();
-                }
-                // Reset counters
-                window.demoInstance.westToEastRecords = 0;
-                window.demoInstance.eastToWestRecords = 0;
-                window.demoInstance.westLag = 0;
-                window.demoInstance.eastLag = 0;
-                window.demoInstance.westThroughput = 0;
-                window.demoInstance.eastThroughput = 0;
-                window.demoInstance.conflictsDetected = 0;
-                window.demoInstance.startTime = Date.now();
-
-                // Clear logs
-                const logContainer = document.getElementById('activity-log');
-                logContainer.innerHTML = `
-                    <div class="log-entry west">West Extract process started</div>
-                    <div class="log-entry west">West Distribution Path initialized</div>
-                    <div class="log-entry east">East Extract process started</div>
-                    <div class="log-entry east">East Distribution Path initialized</div>
-                    <div class="log-entry">Bidirectional replication ready</div>
-                `;
-
-                // Reset network status
-                document.getElementById('network-status').textContent = 'Healthy';
-                document.getElementById('network-status').className = 'metric-value';
-
-                // Show toast
-                window.demoInstance.showToast('Demo reset successfully', 'info');
-            }
-        }
-
         // Initialize the demo when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             const demo = new GoldenGateBidirectionalDemo();
-            window.demoInstance = demo; // Store reference for reset function
         });
     </script>
 </body>
