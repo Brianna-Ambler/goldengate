@@ -3,7 +3,12 @@
   "help": "livelabs-help-db_us@oracle.com",
   "tutorials": [
     {
-      "title": "Introduction",
+      "title": "Introduction (Linked Demo)",
+      "description": "Learn more about Oracle GoldenGate",
+      "filename": "../goldengate-demo-introduction.md"
+    },
+    {
+      "title": "Introduction (Embedded Demo)",
       "description": "Learn more about Oracle GoldenGate",
       "filename": "../goldengate-demo-embedded.md"
     }

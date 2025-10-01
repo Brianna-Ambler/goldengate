@@ -44,7 +44,6 @@
             border: 1px solid var(--border-color);
             padding: 30px;
             box-shadow: 0 2px 4px var(--shadow-light);
-            margin-right: 380px; /* Make room for side panels */
         }
 
         h1 {
@@ -314,9 +313,9 @@
         }
 
         .activity-log-panel {
-            position: fixed;
+            position: absolute;
             top: 120px;
-            right: 20px;
+            left: calc(50% + 750px);
             width: 350px;
             background: var(--white);
             color: var(--text-primary);
@@ -331,16 +330,16 @@
 
         .activity-log-panel h4 {
             margin-bottom: 15px;
-            color: var(--brand-yellow);
+            color: var(--slate-100);
             border-bottom: 1px solid var(--brand-yellow);
             padding-bottom: 5px;
             font-size: 1.1em;
         }
 
         .metrics-panel {
-            position: fixed;
+            position: absolute;
             top: 440px;
-            right: 20px;
+            left: calc(50% + 750px);
             width: 350px;
             background: var(--white);
             color: var(--text-primary);
@@ -354,7 +353,7 @@
 
         .metrics-panel h4 {
             margin-bottom: 15px;
-            color: var(--brand-yellow);
+            color: var(--slate-100);
             border-bottom: 1px solid var(--brand-yellow);
             padding-bottom: 5px;
         }
@@ -429,7 +428,7 @@
         .control-button {
             padding: 12px 24px;
             border: none;
-            border-radius: 4px;
+            border-radius: 25px;
             background: var(--slate-100);
             color: var(--white);
             font-weight: 500;
