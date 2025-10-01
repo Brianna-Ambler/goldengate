@@ -6,9 +6,9 @@ Oracle GoldenGate 23ai is the Swiss Army Knife for Real-Time Data Integration, e
 
 ### Try the Interactive Demo
 
-Launch the HTML demo here:
-- <a href="https://brianna-ambler.github.io/goldengate/demos/goldengate/goldengate-demo.html" target="_blank">Open the Interactive Demo</a>
+<iframe src="../goldengate-demo.html" width="100%" height="2000" frameborder="0" style="min-width: 100%; min-height: 1100px;"></iframe>
 
+</br>
 Objectives:
 - Understand the bidirectional replication architecture with Extract, Distribution Path, Trail files, and Replicat processes
 - Observe real-time data flow and transaction processing between two database sites
