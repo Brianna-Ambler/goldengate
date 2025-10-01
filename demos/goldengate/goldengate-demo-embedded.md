@@ -2,7 +2,9 @@
 
 ## About this Demo
 
-Oracle GoldenGate 23ai is the Swiss Army Knife for Real-Time Data Integration, enabling high availability, transactional replication, and change data capture across heterogeneous systems. This interactive demo showcases GoldenGate's bidirectional replication capabilities, real-time data flow visualization, and conflict resolution in a microservices architecture. The purpose of this lab is to introduce an opportunity to help customers learn about GoldenGate with interactive visuals that require no set-up.
+Oracle GoldenGate 23ai is the Swiss Army Knife for Real-Time Data Integration, enabling high availability, transactional replication, and change data capture across heterogeneous systems. This interactive demo showcases GoldenGate's bidirectional replication capabilities, real-time data flow visualization, and conflict resolution in a microservices architecture. The purpose of this lab is to introduce a new opportunity to help customers interactively learn about GoldenGate with no setup required.
+
+[](youtube:REPLACE_WITH_VIDEO_ID)
 
 ### Try the Interactive Demo
 
