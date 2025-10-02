@@ -6,9 +6,9 @@ Oracle GoldenGate 23ai is the Swiss Army Knife for Real-Time Data Integration, e
 
 [](youtube:REPLACE_WITH_VIDEO_ID)
 
-### Try the Interactive Demo
+## Try the Interactive Demo
 
-<iframe src="../goldengate-demo.html" width="100%" height="2000" frameborder="0" style="min-width: 100%; min-height: 1100px;"></iframe>
+<iframe src="../goldengate-demo.html" width="100%" height="1100px" frameborder="0" style="min-width: 100%; min-height: 1100px; height: 1100px !important;" ></iframe>
 
 </br>
 Objectives:
